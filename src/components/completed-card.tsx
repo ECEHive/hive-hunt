@@ -33,7 +33,7 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 	};
 
 	return (
-		<Card>
+		<Card className="bg-card/50 backdrop-blur-sm border-muted">
 			<CardContent className="pt-6">
 				<h1 className="text-5xl font-bold my-4 leading-tight">
 					Hunt Completed!
@@ -41,26 +41,6 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 				<p>
 					Congratulations! Show the information below to an event coordinator.
 				</p>
-
-				{/* Verification Sentence - Most Prominent */}
-				<div className="mt-6 p-6 bg-green-50 border-2 border-green-200 rounded-lg">
-					<h2 className="text-xl font-bold text-center mb-3 text-green-800">
-						Verification Sentence
-					</h2>
-					<div className="text-center">
-						<div className="text-2xl font-mono font-bold text-green-900 bg-white p-4 rounded-lg border border-green-300 leading-relaxed">
-							&quot;
-							{gameState.completedClues
-								.sort((a, b) => a.id - b.id)
-								.map((clue) => clue.word)
-								.join(" ")}
-							&quot;
-						</div>
-						<p className="text-sm text-green-700 mt-2">
-							Show this sentence to verify all clues were found
-						</p>
-					</div>
-				</div>
 
 				{/* Score Section */}
 				<div className="mt-4 p-4 bg-primary/10 rounded-lg border-2 border-primary">
@@ -71,6 +51,24 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 					<p className="text-center text-sm text-muted-foreground mt-1">
 						(lower is better)
 					</p>
+				</div>
+
+				{/* Verification Phrase */}
+				<div className="mt-4 p-6 bg-green-50 border-2 border-green-200 rounded-lg">
+					<h2 className="text-lg font-bold text-center mb-3 text-green-800">
+						Verification Phrase
+					</h2>
+					<div className="text-center">
+						<div className="text-2xl font-mono font-bold text-green-900 bg-white p-4 rounded-lg border border-green-300 leading-relaxed">
+							{gameState.completedClues
+								.sort((a, b) => a.id - b.id)
+								.map((clue) => clue.word)
+								.join(" ")}
+						</div>
+						<p className="text-sm text-green-700 mt-2">
+							Show this phrase to verify all locations were found.
+						</p>
+					</div>
 				</div>
 
 				{/* Game Statistics */}
@@ -133,7 +131,7 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 							</div>
 							<div>
 								Hint penalty: +{scoreData.hintPenalty.toLocaleString()} points (
-								{gameState.usedHints.length} × 300)
+								{gameState.usedHints.length} × 50)
 							</div>
 						</div>
 					</div>

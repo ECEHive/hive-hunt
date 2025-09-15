@@ -128,7 +128,7 @@ export function getScoreBreakdown(
 	const minDistance = Math.max(totalDistance, 400);
 
 	const velocityScore = (timeInSeconds / minDistance) * 100;
-	const hintPenalty = usedHints.length * 300;
+	const hintPenalty = usedHints.length * 50;
 	const totalScore = Math.round(velocityScore + hintPenalty);
 	const efficiency = timeInSeconds / (totalDistance / 100); // seconds per 100m
 
