@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import type { GameState } from "@/hooks/game-state";
-import { getScoreBreakdown } from "@/lib/utils";
+import { getScoreBreakdown } from "@/lib/scoring";
 
 export function CompletedCard({ gameState }: { gameState: GameState }) {
 	// Calculate score and detailed breakdown
