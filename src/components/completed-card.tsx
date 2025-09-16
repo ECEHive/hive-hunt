@@ -1,8 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import type { GameState } from "@/hooks/game-state";
 import { getBreakdown } from "@/lib/scoring";
+import { Button } from "@/components/ui/button";
+import {
+	AlertDialog,
+	AlertDialogTrigger,
+	AlertDialogContent,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogAction,
+	AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { useGameState } from "@/hooks/game-state";
 
 export function CompletedCard({ gameState }: { gameState: GameState }) {
+	// Use hook to access reset (prop may have stale reference otherwise)
+	const { resetGameState } = useGameState();
 	// Calculate score and detailed breakdown
 	const scoreData =
 		gameState.startTime && gameState.endTime
@@ -22,7 +37,7 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 				};
 
 	return (
-		<Card className="bg-card/50 backdrop-blur-sm border-muted">
+		<Card className="relative bg-card/50 backdrop-blur-sm border-muted">
 			<CardContent className="pt-6">
 				<h1 className="text-5xl font-bold my-4 leading-tight">
 					Hunt Completed!
@@ -98,6 +113,45 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 						</div>
 					</div>
 				</div>
+
+				{
+					/* Reset Button with Confirmation */
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<Button
+								variant="ghost"
+								size="sm"
+								className="text-xs px-2 h-7 mt-4"
+							>
+								Reset
+							</Button>
+						</AlertDialogTrigger>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+								<AlertDialogTitle>Reset game?</AlertDialogTitle>
+								<AlertDialogDescription>
+									This will clear all progress, clues, hints, and timing data.
+									You cannot undo this action.
+								</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter>
+								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<AlertDialogAction
+									onClick={() => {
+										resetGameState();
+										// Optionally reload to ensure UI fully resets
+										if (typeof window !== "undefined") {
+											window.location.reload();
+										}
+									}}
+									className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+								>
+									Confirm Reset
+								</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
+				}
 			</CardContent>
 		</Card>
 	);
