@@ -1,13 +1,14 @@
 import { describe, test, expect } from "bun:test";
-import { calculateScore, getScoreBreakdown } from "@/lib/scoring";
+import { calculateScore, getBreakdown } from "@/lib/scoring";
 
 const iso = (offsetSeconds: number) =>
 	new Date(offsetSeconds * 1000).toISOString();
 
 describe("scoring", () => {
 	const start = iso(0);
-	const endShort = iso(600); // 10 minutes
-	const endLong = iso(3600); // 1 hour
+	const endShort = iso(60 * 10); // 10 minutes
+	const endLong = iso(60 * 60 * 1); // 1 hour
+	const endVeryLong = iso(60 * 60 * 1000); // 1000 hours
 
 	const completed = [
 		{ id: 0, time: iso(60), word: "A" },
@@ -15,36 +16,37 @@ describe("scoring", () => {
 		{ id: 2, time: iso(180), word: "C" },
 	] as any;
 
-	test("calculateScore basic lower time yields lower score (same hints)", () => {
-		const shortScore = calculateScore(start, endShort, 0, completed);
-		const longScore = calculateScore(start, endLong, 0, completed);
-		expect(shortScore).toBeLessThan(longScore);
+	test("calculateScore basic lower time yields higher score (same hints)", () => {
+		const shortScore = calculateScore(start, endShort, [], completed);
+		const longScore = calculateScore(start, endLong, [], completed);
+		expect(shortScore).toBeGreaterThan(longScore);
 	});
 
 	test("calculateScore adds hint penalties", () => {
-		const noHint = calculateScore(start, endShort, 0, completed);
-		const withHints = calculateScore(start, endShort, 2, completed);
-		expect(withHints).toBeGreaterThan(noHint);
+		const noHint = calculateScore(start, endShort, [], completed);
+		const withHints = calculateScore(start, endShort, [0, 1], completed);
+		expect(withHints).toBeLessThan(noHint);
 	});
 
-	test("getScoreBreakdown returns consistent total", () => {
-		const breakdown = getScoreBreakdown(start, endShort, [0, 1], completed);
-		expect(breakdown.totalScore).toBeGreaterThan(0);
-		expect(breakdown.velocityScore + breakdown.hintPenalty).toBe(
-			breakdown.totalScore,
+	test("calculateScore never returns less than zero", () => {
+		const score = calculateScore(
+			start,
+			endVeryLong,
+			[0, 1, 2, 3, 4],
+			completed,
 		);
+		expect(score).toBeGreaterThanOrEqual(0);
 	});
 
-	test("getScoreBreakdown efficiency scales with distance (mock minimal distance)", () => {
-		const minimalCompleted = [{ id: 0, time: iso(60), word: "A" }] as any;
-		const breakdown = getScoreBreakdown(start, endShort, [], minimalCompleted);
-		expect(breakdown.totalDistance).toBeGreaterThanOrEqual(0); // Non-negative
+	test("getBreakdown and calculateScore returns same value", () => {
+		const breakdown = getBreakdown(start, endShort, [0, 1], completed);
+		const score = calculateScore(start, endShort, [0, 1], completed);
+		expect(breakdown.score).toBe(score);
 	});
 
-	test("getScoreBreakdown handles zero distance edge case", () => {
+	test("calculateScore handles zero distance edge case", () => {
 		const minimalCompleted = [{ id: 0, time: iso(60), word: "A" }] as any;
-		const breakdown = getScoreBreakdown(start, endShort, [], minimalCompleted);
-		expect(breakdown.totalDistance).toBe(0);
-		expect(breakdown.efficiency).toBeGreaterThan(0); // Should still compute efficiency
+		const score = calculateScore(start, endShort, [], minimalCompleted);
+		expect(score).toBeGreaterThanOrEqual(0);
 	});
 });

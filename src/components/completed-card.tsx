@@ -1,36 +1,25 @@
 import { Card, CardContent } from "@/components/ui/card";
 import type { GameState } from "@/hooks/game-state";
-import { getScoreBreakdown } from "@/lib/scoring";
+import { getBreakdown } from "@/lib/scoring";
 
 export function CompletedCard({ gameState }: { gameState: GameState }) {
 	// Calculate score and detailed breakdown
 	const scoreData =
 		gameState.startTime && gameState.endTime
-			? getScoreBreakdown(
+			? getBreakdown(
 					gameState.startTime,
 					gameState.endTime,
 					gameState.usedHints,
 					gameState.completedClues,
 				)
 			: {
-					totalScore: 0,
-					velocityScore: 0,
-					hintPenalty: 0,
-					totalDistance: 0,
-					timeInSeconds: 0,
-					efficiency: 0,
+					pace: 0,
+					distance: 0,
+					score: 0,
+					duration: "N/A",
+					start: "N/A",
+					end: "N/A",
 				};
-
-	const formatTime = (seconds: number) => {
-		const hours = Math.floor(seconds / 3600);
-		const minutes = Math.floor((seconds % 3600) / 60);
-		const secs = Math.floor(seconds % 60);
-
-		if (hours > 0) {
-			return `${hours}h ${minutes}m ${secs}s`;
-		}
-		return `${minutes}m ${secs}s`;
-	};
 
 	return (
 		<Card className="bg-card/50 backdrop-blur-sm border-muted">
@@ -46,11 +35,8 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 				<div className="mt-4 p-4 bg-primary/10 rounded-lg border-2 border-primary">
 					<h2 className="text-xl font-bold text-center mb-2">Final Score</h2>
 					<div className="text-3xl font-bold text-center text-primary">
-						{scoreData.totalScore.toLocaleString()}
+						{scoreData.score.toLocaleString()}
 					</div>
-					<p className="text-center text-sm text-muted-foreground mt-1">
-						(lower is better)
-					</p>
 				</div>
 
 				{/* Verification Phrase */}
@@ -77,27 +63,17 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 					<div className="space-y-2 text-sm">
 						<div className="flex justify-between items-center">
 							<span className="font-medium">Start Time:</span>
-							<span className="text-right">
-								{gameState.startTime
-									? new Date(gameState.startTime).toLocaleString()
-									: "N/A"}
-							</span>
+							<span className="text-right">{scoreData.start}</span>
 						</div>
 
 						<div className="flex justify-between items-center">
 							<span className="font-medium">End Time:</span>
-							<span className="text-right">
-								{gameState.endTime
-									? new Date(gameState.endTime).toLocaleString()
-									: "N/A"}
-							</span>
+							<span className="text-right">{scoreData.end}</span>
 						</div>
 
 						<div className="flex justify-between items-center">
 							<span className="font-medium">Total Time:</span>
-							<span className="text-right font-mono">
-								{formatTime(scoreData.timeInSeconds)}
-							</span>
+							<span className="text-right font-mono">{scoreData.duration}</span>
 						</div>
 
 						<div className="flex justify-between items-center">
@@ -108,31 +84,17 @@ export function CompletedCard({ gameState }: { gameState: GameState }) {
 						</div>
 
 						<div className="flex justify-between items-center">
-							<span className="font-medium">Distance Traveled:</span>
+							<span className="font-medium">Distance:</span>
 							<span className="text-right font-mono">
-								{scoreData.totalDistance}m
+								{scoreData.distance.toFixed(0)} m
 							</span>
 						</div>
 
 						<div className="flex justify-between items-center">
-							<span className="font-medium">Efficiency:</span>
+							<span className="font-medium">Speed:</span>
 							<span className="text-right font-mono">
-								{scoreData.efficiency}s per 100m
+								{scoreData.pace.toFixed(2)} m/s
 							</span>
-						</div>
-					</div>
-
-					<div className="mt-4 pt-4 border-t border-muted">
-						<h4 className="font-semibold mb-2">Score Breakdown</h4>
-						<div className="text-sm text-muted-foreground space-y-1">
-							<div>
-								Efficiency score: {scoreData.velocityScore.toLocaleString()}{" "}
-								points
-							</div>
-							<div>
-								Hint penalty: +{scoreData.hintPenalty.toLocaleString()} points (
-								{gameState.usedHints.length} × 50)
-							</div>
 						</div>
 					</div>
 				</div>

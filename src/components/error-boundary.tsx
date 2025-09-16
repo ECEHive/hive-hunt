@@ -24,11 +24,11 @@ export class ErrorBoundary extends React.Component<
 			return (
 				<div
 					role="alert"
-					className="p-6 m-4 rounded-md border bg-destructive/10 text-destructive"
+					className="bg-card/50 backdrop-blur-sm border-muted p-6 w-screen h-screen flex flex-col justify-center items-center text-center"
 				>
 					<h2 className="font-semibold mb-2">Something went wrong</h2>
 					<p className="text-sm opacity-80">
-						Try refreshing the page. If the problem persists, contact an
+						Try refreshing the page. If the problem persists, contact an event
 						organizer.
 					</p>
 				</div>
