@@ -15,18 +15,56 @@ describe("distance", () => {
 		expect(within(d, 111_195, 500)).toBe(true);
 	});
 
-	test("calculateTotalDistance returns 0 for <2 clues", () => {
+	test("calculateTotalDistance returns 0 for empty list", () => {
 		expect(calculateTotalDistance([] as any)).toBe(0);
 	});
 
-	test("calculateTotalDistance sums sequential distances", () => {
-		// Use first three clues defensively (non-null assertions because test data is static)
+	test("single completed clue counts distance from final clue start", () => {
+		const finalClue = clues.find((c) => c.isFinal)!;
+		const first = clues[0]!;
 		const completed = [
-			{ id: clues[0]!.id, time: new Date(0).toISOString(), word: "A" },
-			{ id: clues[1]!.id, time: new Date(1).toISOString(), word: "B" },
-			{ id: clues[2]!.id, time: new Date(2).toISOString(), word: "C" },
+			{ id: first.id, time: new Date(0).toISOString(), word: "A" },
 		];
+		const expected = haversineDistance(
+			finalClue.location.lat,
+			finalClue.location.lng,
+			first.location.lat,
+			first.location.lng,
+		);
 		const total = calculateTotalDistance(completed as any);
-		expect(total).toBeGreaterThan(0);
+		expect(Math.abs(total - expected)).toBeLessThan(1e-6);
+	});
+
+	test("calculateTotalDistance includes start leg plus sequential legs", () => {
+		const finalClue = clues.find((c) => c.isFinal)!;
+		const a = clues[0]!;
+		const b = clues[1]!;
+		const c = clues[2]!;
+		const completed = [
+			{ id: a.id, time: new Date(0).toISOString(), word: "A" },
+			{ id: b.id, time: new Date(1).toISOString(), word: "B" },
+			{ id: c.id, time: new Date(2).toISOString(), word: "C" },
+		];
+		const expected =
+			haversineDistance(
+				finalClue.location.lat,
+				finalClue.location.lng,
+				a.location.lat,
+				a.location.lng,
+			) +
+			haversineDistance(
+				a.location.lat,
+				a.location.lng,
+				b.location.lat,
+				b.location.lng,
+			) +
+			haversineDistance(
+				b.location.lat,
+				b.location.lng,
+				c.location.lat,
+				c.location.lng,
+			);
+		const total = calculateTotalDistance(completed as any);
+		expect(Math.abs(total - expected)).toBeLessThan(1e-6);
 	});
 });

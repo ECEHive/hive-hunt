@@ -30,7 +30,7 @@ export function haversineDistance(
 export function calculateTotalDistance(
 	completedClues: CompletedClue[],
 ): number {
-	if (completedClues.length < 2) return 0;
+	if (completedClues.length === 0) return 0;
 
 	// Sort clues by completion time to get the order they were visited
 	const sortedClues = [...completedClues].sort(
@@ -39,15 +39,33 @@ export function calculateTotalDistance(
 
 	let totalDistance = 0;
 
+	// Determine starting (origin) location: the clue marked isFinal
+	const finalClue = clues.find((c) => c.isFinal);
+	const originLocation = finalClue?.location;
+
+	// Add initial leg from origin (final clue / starting location) to the first completed clue
+	if (originLocation) {
+		const firstCompleted = sortedClues[0];
+		if (firstCompleted) {
+			const firstClue = clues.find((c) => c.id === firstCompleted.id);
+			if (firstClue?.location) {
+				totalDistance += haversineDistance(
+					originLocation.lat,
+					originLocation.lng,
+					firstClue.location.lat,
+					firstClue.location.lng,
+				);
+			}
+		}
+	}
+
+	// Sequential legs between visited clues (only if at least 2)
 	for (let i = 1; i < sortedClues.length; i++) {
 		const prevCompletedClue = sortedClues[i - 1];
 		const currentCompletedClue = sortedClues[i];
-
 		if (!prevCompletedClue || !currentCompletedClue) continue;
-
 		const prevClue = clues.find((c) => c.id === prevCompletedClue.id);
 		const currentClue = clues.find((c) => c.id === currentCompletedClue.id);
-
 		if (prevClue?.location && currentClue?.location) {
 			totalDistance += haversineDistance(
 				prevClue.location.lat,
