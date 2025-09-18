@@ -32,7 +32,7 @@ export function calculateScore(
 	const hintPenalty = Math.pow(1 - HINT_PENALTY_FRACTION, usedHints.length);
 	const finalScore = 1000 * normalizedPace * hintPenalty;
 
-	return Math.min(1000, Math.max(0, Math.round(finalScore)));
+	return Math.min(1000, Math.max(0, Math.round(finalScore))) * 100;
 }
 
 /**

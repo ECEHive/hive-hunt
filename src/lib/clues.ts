@@ -80,7 +80,7 @@ export const clues = [
 		text:
 			"Where the mural greets all with a welcome,<br>" +
 			"Look for the sign where a saucy slice was taped.<br>" +
-			"It once defied gravity's cheesy display,<br>" +
+			"It once defied gravity in a cheesy display,<br>" +
 			"A delicious triangle to brighten a day.",
 		hint: "Near the mouse, and your studio's house.",
 		location: { lat: 33.7739349583727, lng: -84.39617017072088 },
