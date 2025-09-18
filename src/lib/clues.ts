@@ -7,15 +7,17 @@ export type Clue = {
 };
 
 export const clues = [
+	// 0 Campanile
 	{
 		id: 0,
 		text:
 			"The spotlight of the open-air stage<br>" +
 			"Once a fountain, now a silent cage<br>" +
 			"Look where shadows stretch at dusk's debut",
-		hint: "A steel symbol in the sunset's view",
+		hint: "A tall steel symbol in the old logo's view",
 		location: { lat: 33.77431503948425, lng: -84.39815834518541 },
 	},
+	// 1 Student Center Ice Cream Statue
 	{
 		id: 1,
 		text:
@@ -25,6 +27,7 @@ export const clues = [
 		hint: "Flame or cone? The debate burns on.",
 		location: { lat: 33.77415936142189, lng: -84.39908355160178 },
 	},
+	// 2 Van Leer Roof
 	{
 		id: 2,
 		text:
@@ -36,6 +39,7 @@ export const clues = [
 		hint: "Climb past electrons to reach the stars.",
 		location: { lat: 33.7760940812658, lng: -84.39713455531107 },
 	},
+	// 3 IC Solar Table
 	{
 		id: 3,
 		text:
@@ -45,29 +49,45 @@ export const clues = [
 		hint: "Somewhere solar meets silicon.",
 		location: { lat: 33.776003343447904, lng: -84.400921821897 },
 	},
+	// 4 Seven Bridges
 	{
 		id: 4,
 		text:
-			"Where two towers meet in coded thought,<br>" +
-			"Overseen from the Falcon's flight path,<br>" +
-			"Not a great white — just big, blue, and bold.",
-		hint: "A connection in more ways than one.",
-		location: { lat: 33.77710867217703, lng: -84.39700721967783 },
+			"A challenge born from Königsberg's lore,<br>" +
+			"Where paths are crossed—but not once more.<br>" +
+			"Seven spans to test your stride,<br>" +
+			"One-way journeys, logic as your guide.",
+		hint: "Near where the stone workers reside.",
+		location: { lat: 33.77691510303969, lng: -84.3982052100543 },
 	},
+	// 5 Gairs
 	{
 		id: 5,
-		text: "Gairs",
+		text: "Gairs<br>---- Gairs<br>---- ---- Gairs",
 		hint: "Rainbow",
 		location: { lat: 33.77696011407176, lng: -84.39588019291968 },
 	},
+	// 6 Einstein
 	{
 		id: 6,
 		text: "His biggest awarded work is not his most famous<br>One of three but doesn't make bagels",
 		hint: "Thoughtful and seated, but never speaks.",
 		location: { lat: 33.775069569186144, lng: -84.39792036222558 },
 	},
+	// 7 Skiles Sign
 	{
 		id: 7,
+		text:
+			"Where the mural greets all with a welcome,<br>" +
+			"Look for the sign where a saucy slice was taped.<br>" +
+			"It once defied gravity's cheesy display,<br>" +
+			"A delicious triangle to brighten a day.",
+		hint: "Near the mouse, and your studio's house.",
+		location: { lat: 33.7739349583727, lng: -84.39617017072088 },
+	},
+	// 8 Hive
+	{
+		id: 8,
 		isFinal: true,
 		text:
 			"From the ashes of knowledge, a turtle duck will rise,<br>" +
@@ -75,6 +95,6 @@ export const clues = [
 			"A final clue in this quest you chase,<br>" +
 			"Find the start of this chase.",
 		hint: "Just go back to the Hive.",
-		location: { lat: 33.775526042544506, lng: -84.3973845836205 },
+		location: { lat: 33.77549370257786, lng: -84.39738166389168 },
 	},
 ] as Clue[];
