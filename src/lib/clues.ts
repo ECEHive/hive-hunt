@@ -63,7 +63,7 @@ export const clues = [
 	// 5 Gairs
 	{
 		id: 5,
-		text: "Gairs<br>---- Gairs<br>---- ---- Gairs",
+		text: "Gairs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>----- Gairs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>----- ----- Gairs",
 		hint: "Rainbow",
 		location: { lat: 33.77696011407176, lng: -84.39588019291968 },
 	},
